@@ -4,7 +4,24 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
+  const test = async () => {
+    try {
+      console.log('test ', import.meta.env.VITE_API_URL);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/populate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      console.log('raw response ', response, import.meta.env.VITE_API_URL);
+      const data = await response.json();
+      console.log('data received ', data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
 
   return (
     <>
@@ -18,11 +35,11 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button onClick={test}>
           count is {count}
         </button>
         <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+          Edit123 <code>src/App.jsx</code> and save to test HMR
         </p>
       </div>
       <p className="read-the-docs">
