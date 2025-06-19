@@ -9,11 +9,17 @@ function App() {
   const test = async () => {
     try {
       console.log('test ', import.meta.env.VITE_API_URL);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/populate`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        }
+        },
+        body: JSON.stringify({
+          name: 'John Doe',
+          email: 'john@example.com',
+          password: 'password123',
+          date: new Date.now()
+        })
       });
       console.log('raw response ', response, import.meta.env.VITE_API_URL);
       const data = await response.json();
