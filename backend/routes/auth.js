@@ -47,11 +47,14 @@ router.post('/login', async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(401).json({ message: 'Invalid email or password' });
+    return res.status(401).json({
+      message: 'Invalid email or password',
+      status: 401
+    });
   }
 
   const token = jwt.sign({ userId: user._id, username: user.name }, JWT_SECRET, { expiresIn: '100h'});
-  res.json({ token });
+  res.json({ token, username: user.name, status: 200 });
 });
 
 // for registering a new user
