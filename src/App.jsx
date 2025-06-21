@@ -6,7 +6,7 @@ import PrivateRoute from '@/components/routes/PrivateRoute';
 import { GlobalLoader } from '@/components/GlobalLoader';
 
 const Login = lazy(() => import('./pages/Login'));
-const Register = lazy(() => import('@/pages/register'));
+const Register = lazy(() => import('@/pages/Register'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const DefaultLayout = lazy(() => import('./layouts/DefaultLayout'));
 const SimpleLayout = lazy(() => import('./layouts/SimpleLayout'));
