@@ -10,6 +10,10 @@ const transactionSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  merchant: {
+    type: String,
+    required: true
+  },
   category: {
     type: String,
     required: true
