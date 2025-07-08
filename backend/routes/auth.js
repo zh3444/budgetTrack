@@ -41,6 +41,33 @@ export const authenticateToken = (req, res, next) => {
   }
 }
 
+// for checking if the user needs to reauthenticate with Google
+router.get('/check-gmail-token', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.find({ email: req.user.email });
+
+    if (!user) {
+      return res.status(404).json({
+        error: `User ${req.user.email} not found`
+      });
+    }
+    if (user.gmailRefreshToken === 'error') {
+      return res.json({
+        valid: false,
+        needsReauth: true
+      });
+    }
+    return res.json({
+      valid: true,
+      needsReauth: false
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Token validation failed ' + error.message
+    });
+  }
+});
+
 // for authenticating a user
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -67,7 +94,9 @@ router.post('/register', async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      createdAt: date
+      createdAt: date,
+      gmailRefreshToken: null,
+      lastEmailCheck: null
     });
     res.status(200).json({
       message: 'User created successfully',
@@ -78,5 +107,9 @@ router.post('/register', async (req, res) => {
   }
 });
 
+router.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+});
 
 export default router;
