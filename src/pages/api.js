@@ -19,6 +19,7 @@ export const login = async ({ email, password }) => {
     });
     const data = await response.json();
     localStorage.setItem('token', data.token);
+    localStorage.setItem('email', email);
     return data;
   } catch (error) {
     console.log('An error occured ', error);
@@ -46,5 +47,19 @@ export const register = async (params) => {
     return data;
   } catch (error) {
     console.log('An error occured ', error);
+  }
+}
+
+export const checkGmailTokenStatus = async (token) => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/check-gmail-token`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log('An error occurred ', error);
   }
 }
